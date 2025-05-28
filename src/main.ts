@@ -9,7 +9,7 @@ async function bootstrap() {
     .setTitle('Trendecho')
     .setDescription('Trendecho API description')
     .setVersion('1.0')
-    .addTag('cats')
+    // .addTag('cats')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
