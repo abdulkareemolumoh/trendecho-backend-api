@@ -1,6 +1,8 @@
 import { PrismaClient, Role } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
+const SALT_ROUNDS = 10; // Number of salt rounds for bcrypt hashing
 
 async function main() {
   // Clear existing data (optional, use with caution in production)
@@ -8,23 +10,26 @@ async function main() {
   await prisma.post.deleteMany();
   await prisma.user.deleteMany();
 
-  // Seed Users
+  // Seed Users with hashed passwords
   const users = await prisma.user.createMany({
     data: [
       {
         userName: 'alice_smith',
         email: 'alice@example.com',
         role: Role.ADMIN,
+        password: await bcrypt.hash('alice_password123', SALT_ROUNDS), // Hash password
       },
       {
         userName: 'bob_johnson',
         email: 'bob@example.com',
         role: Role.USER,
+        password: await bcrypt.hash('bob_password456', SALT_ROUNDS), // Hash password
       },
       {
         userName: 'carol_williams',
         email: 'carol@example.com',
         role: Role.USER,
+        password: await bcrypt.hash('carol_password789', SALT_ROUNDS), // Hash password
       },
     ],
     skipDuplicates: true, // Prevent duplicates based on unique email

@@ -25,6 +25,7 @@ model User {
   role     Role      @default(USER)
   email    String    @unique
   posts    Post[]
+  password String?
 }
 
 model Post {
