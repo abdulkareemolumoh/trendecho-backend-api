@@ -27,4 +27,12 @@ export class CreateUserDto {
   })
   @IsEnum(Role)
   role?: Role = Role.USER;
+
+  @ApiProperty({
+    example: 'password123',
+    description: 'Password of the user',
+  })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
