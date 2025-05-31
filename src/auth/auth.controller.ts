@@ -8,13 +8,15 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { SignInDto } from './dto/signInDto';
+// import { Public } from './public.decorator';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post()
+  // @Public()
+  @Post('login')
   @ApiOperation({
     summary: 'Generate authentication token',
     description:
@@ -36,6 +38,7 @@ export class AuthController {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
+  // @Public()
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
