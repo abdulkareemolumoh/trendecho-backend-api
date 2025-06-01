@@ -7,12 +7,22 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log', 'debug', 'verbose'], // Enable detailed logging
   });
 
+  // Configure CORS to allow all origins
+  app.enableCors({
+    origin: '*', // This allows all origins
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: '*',
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Trendecho')
     .setDescription('Trendecho API description')
-    .setVersion('1.0')
-    // .addTag('cats')
+    .addBearerAuth()
     .build();
+  // .setVersion('1.0');
+  // .addTag('cats')
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 

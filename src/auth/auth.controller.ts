@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dto/signInDto';
 import { RolesGuard } from './roles.guard';
 import { Roles } from './role.decorator';
@@ -19,6 +19,7 @@ import { Public } from './public.decorator';
 
 @ApiTags('auth')
 @Controller('auth')
+@ApiBearerAuth()
 export class AuthController {
   constructor(private authService: AuthService) {}
 

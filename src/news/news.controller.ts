@@ -10,14 +10,17 @@ import {
 import { NewsService } from './news.service';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
-import { ApiTags } from '@nestjs/swagger';
-import { Public } from '../auth/public.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Roles } from '../auth/role.decorator';
+import { Role } from '../auth/type';
 
 @ApiTags('news')
 @Controller('news')
+@ApiBearerAuth()
 export class NewsController {
   constructor(private readonly newsService: NewsService) {}
 
+  @Roles(Role.ADMIN)
   @Post()
   create(@Body() createNewsDto: CreateNewsDto) {
     return this.newsService.create(createNewsDto);
@@ -38,7 +41,7 @@ export class NewsController {
     return this.newsService.update(+id, updateNewsDto);
   }
 
-  @Public()
+  @Roles(Role.USER)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.newsService.remove(+id);
