@@ -30,6 +30,10 @@ export class NewsService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} news`;
+    return prisma.post.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

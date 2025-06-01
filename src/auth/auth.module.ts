@@ -21,10 +21,10 @@ import { RolesGuard } from './roles.guard';
   providers: [
     AuthService,
     UsersService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
     // {
     //   provide: APP_GUARD,
     //   useClass: RolesGuard,

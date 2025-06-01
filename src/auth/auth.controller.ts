@@ -15,12 +15,14 @@ import { RolesGuard } from './roles.guard';
 import { Roles } from './role.decorator';
 import { Role } from './type';
 import { AuthGuard } from './auth.guard';
+import { Public } from './public.decorator';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   createToken(@Body() signInDto: SignInDto) {

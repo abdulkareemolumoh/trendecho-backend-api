@@ -11,6 +11,7 @@ import { NewsService } from './news.service';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from '../auth/public.decorator';
 
 @ApiTags('news')
 @Controller('news')
@@ -37,6 +38,7 @@ export class NewsController {
     return this.newsService.update(+id, updateNewsDto);
   }
 
+  @Public()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.newsService.remove(+id);
