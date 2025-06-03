@@ -6,15 +6,11 @@ import {
   HttpStatus,
   Post,
   Request,
-  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dto/signInDto';
-import { RolesGuard } from './roles.guard';
-import { Roles } from './role.decorator';
-import { Role } from './type';
-import { AuthGuard } from './auth.guard';
+
 import { Public } from './public.decorator';
 
 @ApiTags('auth')

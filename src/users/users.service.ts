@@ -1,14 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Body, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClient } from '@prisma/client';
+import { hashPassword } from '../utils/password.utils';
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async createUser(@Body() createUserDto: CreateUserDto) {
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: createUserDto.email,
+      },
+    });
+    if (existingUser) {
+      throw new BadRequestException('User with this email already exists');
+    }
+
+    const { password: _password, ...user } = await prisma.user.create({
+      data: {
+        userName: createUserDto.userName,
+        email: createUserDto.email,
+        password: await hashPassword(createUserDto.password),
+      },
+    });
+
+    return user;
   }
 
   findAll() {
