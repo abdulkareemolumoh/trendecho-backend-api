@@ -6,15 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from '../auth/public.decorator';
 
 @ApiTags('users')
 @Controller('users')
+@ApiBearerAuth()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -24,6 +26,11 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
+  @Get(`current`)
+  getCurrentUser(@Request() req) {
+    return this.usersService.findOne(req.user.sub);
+  }
+
   @Get()
   findAll() {
     return this.usersService.findAll();
@@ -31,7 +38,7 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+    return this.usersService.findOne(+id);
   }
 
   @Patch(':id')

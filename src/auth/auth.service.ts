@@ -30,7 +30,7 @@ export class AuthService {
 
     try {
       // Fetch user
-      const user = await this.usersService.findOne(email);
+      const user = await this.usersService.findOneByEmail(email);
       this.logger.debug(`Fetched user for email: ${email}`);
 
       if (!user) {

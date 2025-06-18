@@ -33,14 +33,22 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(email: string): any {
+  async findOne(id: number) {
+    const { password: _password, ...user } = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    return user;
+  }
+
+  findOneByEmail(email: string) {
     return prisma.user.findUnique({
       where: {
         email: email,
       },
     });
   }
-
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }

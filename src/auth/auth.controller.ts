@@ -27,8 +27,8 @@ export class AuthController {
   }
 
   // @UseGuards(RolesGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
+  // @Get('profile')
+  // getProfile(@Request() req) {
+  //   return req.user;
+  // }
 }
