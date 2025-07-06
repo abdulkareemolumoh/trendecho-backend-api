@@ -25,6 +25,7 @@ export class UsersService {
         userName: createUserDto.userName,
         email: createUserDto.email,
         passwordHash: await hashPassword(createUserDto.passwordHash),
+        role: createUserDto.role,
       },
     });
 
