@@ -32,7 +32,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  passwordHash: string;
+  password: string;
 
   @ApiProperty({ example: 'JohnDoe', description: 'Username of the user' })
   @IsString()

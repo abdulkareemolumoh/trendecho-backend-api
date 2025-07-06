@@ -28,18 +28,18 @@ model NewsImage {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  email        String    @unique
-  firstName    String
-  lastName     String
-  userName     String
-  passwordHash String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  role         Role      @default(USER)
-  comment      Comment[]
-  posts        News[]
-  Likes        Likes[]
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  firstName String
+  lastName  String
+  userName  String
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  role      Role      @default(USER)
+  comment   Comment[]
+  posts     News[]
+  Likes     Likes[]
 }
 
 model News {
