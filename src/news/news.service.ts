@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 @Injectable()
 export class NewsService {
   create(createNewsDto: CreateNewsDto) {
-    return prisma.post.create({
+    return prisma.news.create({
       data: createNewsDto,
     });
   }
@@ -18,7 +18,7 @@ export class NewsService {
   }
 
   findOne(id: number) {
-    return prisma.post.findUnique({
+    return prisma.news.findUnique({
       where: {
         id,
       },
@@ -30,7 +30,7 @@ export class NewsService {
   }
 
   remove(id: number) {
-    return prisma.post.delete({
+    return prisma.news.delete({
       where: {
         id,
       },

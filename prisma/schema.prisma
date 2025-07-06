@@ -18,27 +18,46 @@ enum Role {
   USER
 }
 
-model User {
-  id       Int       @id @default(autoincrement())
-  comment  Comment[]
-  userName String
-  role     Role      @default(USER)
-  email    String    @unique
-  posts    Post[]
-  password String?
+model NewsImage {
+  id        Int      @id @default(autoincrement())
+  url       String
+  newsId    Int
+  news      News     @relation(fields: [newsId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Post {
-  id          Int       @id @default(autoincrement())
-  title       String
-  content     String
-  category    String
-  createdAt   DateTime  @default(now())
-  description String
-  author      User      @relation(fields: [authorId], references: [id])
-  published   Boolean   @default(false)
-  authorId    Int
-  Comment     Comment[]
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  firstName    String
+  lastName     String
+  userName     String
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  role         Role      @default(USER)
+  comment      Comment[]
+  posts        News[]
+  Likes        Likes[]
+}
+
+model News {
+  id            Int         @id @default(autoincrement())
+  title         String
+  category      String
+  description   String
+  content       String
+  authorId      Int
+  author        User        @relation(fields: [authorId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  isDeleted     Boolean     @default(false)
+  images        NewsImage[]
+  isActive      Boolean     @default(true)
+  emailVerified Boolean     @default(false)
+  Comment       Comment[]
+  Likes         Likes[]
 }
 
 model Comment {
@@ -47,6 +66,20 @@ model Comment {
   createdAt DateTime @default(now())
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
-  post      Post     @relation(fields: [postId], references: [id])
-  postId    Int
+  news      News     @relation(fields: [newsId], references: [id])
+  newsId    Int
+  Likes     Likes[]
+}
+
+model Likes {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  commentId Int?
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  news      News?    @relation(fields: [newsId], references: [id])
+  newsId    Int?
+
+  @@unique([authorId, commentId, newsId]) // Prevent duplicate likes
 }

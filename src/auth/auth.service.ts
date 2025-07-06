@@ -39,7 +39,7 @@ export class AuthService {
       }
 
       // Verify password
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
       if (!isPasswordValid) {
         this.logger.warn(`Invalid password for email: ${email}`);
         throw new UnauthorizedException('Invalid credentials');

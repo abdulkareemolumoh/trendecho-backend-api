@@ -18,11 +18,13 @@ export class UsersService {
       throw new BadRequestException('User with this email already exists');
     }
 
-    const { password: _password, ...user } = await prisma.user.create({
+    const { passwordHash: _password, ...user } = await prisma.user.create({
       data: {
+        firstName: createUserDto.firstName,
+        lastName: createUserDto.lastName,
         userName: createUserDto.userName,
         email: createUserDto.email,
-        password: await hashPassword(createUserDto.password),
+        passwordHash: await hashPassword(createUserDto.passwordHash),
       },
     });
 
@@ -34,7 +36,7 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    const { password: _password, ...user } = await prisma.user.findUnique({
+    const { passwordHash: _password, ...user } = await prisma.user.findUnique({
       where: {
         id: id,
       },
