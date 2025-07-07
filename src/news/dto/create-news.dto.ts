@@ -1,80 +1,71 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsString,
-  IsNotEmpty,
-  IsBoolean,
-  IsInt,
-  IsOptional,
-  IsObject,
-  ValidateNested,
-} from 'class-validator';
-import { Type } from 'class-transformer';
-
-// Optional: Define a specific type for attributes to improve type safety
-interface PostAttributes {
-  featured?: boolean;
-  tags?: string[];
-  metadata?: Record<string, any>;
-}
+import { IsString, IsNotEmpty, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreateNewsDto {
   @ApiProperty({
     description: 'The title of the news post',
-    example: 'My First Blog Post',
+    example: 'Nigeria Wins AFCON 2025',
   })
   @IsString()
   @IsNotEmpty()
   title: string;
 
   @ApiProperty({
-    description: 'The main content of the news post',
-    example: 'This is the content of my first post.',
-  })
-  @IsString()
-  @IsNotEmpty()
-  content: string;
-
-  @ApiProperty({
     description: 'The category of the news post',
-    example: 'General',
+    example: 'Sports',
   })
   @IsString()
   @IsNotEmpty()
   category: string;
 
   @ApiProperty({
-    description: 'A brief description of the news post',
-    example: 'An introduction to my blog.',
+    description: 'A short description of the news',
+    example: 'Nigeria clinches the trophy after a tough final.',
   })
   @IsString()
   @IsNotEmpty()
   description: string;
 
   @ApiProperty({
-    description: 'Whether the post is published (defaults to false)',
+    description: 'The full content of the news article',
+    example: 'In an electrifying final match...',
+  })
+  @IsString()
+  @IsNotEmpty()
+  content: string;
+
+  @ApiProperty({
+    description: 'The ID of the user who authored the news',
+    example: 'c1d75d63-ae13-41a3-98db-3737e96eecde',
+  })
+  @IsString()
+  @IsNotEmpty()
+  authorId: string;
+
+  @ApiProperty({
+    description: 'Whether the news post is active',
     example: true,
     required: false,
   })
   @IsBoolean()
   @IsOptional()
-  published?: boolean;
+  isActive?: boolean;
 
   @ApiProperty({
-    description: 'The ID of the user who authored the post',
-    example: 1,
-  })
-  @IsInt()
-  @IsNotEmpty()
-  authorId: number;
-
-  @ApiProperty({
-    description: 'Additional attributes for the post in JSON format',
-    example: { featured: true, tags: ['blog', 'intro'] },
+    description: 'Whether the email is verified',
+    example: false,
     required: false,
   })
-  @IsObject()
+  @IsBoolean()
   @IsOptional()
-  @ValidateNested()
-  @Type(() => Object)
-  attributes?: PostAttributes;
+  emailVerified?: boolean;
+
+  @ApiProperty({
+    description: 'Whether the news is marked as deleted',
+    example: false,
+    required: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  isDeleted?: boolean;
 }

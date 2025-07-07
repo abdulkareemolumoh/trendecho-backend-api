@@ -1,14 +1,14 @@
 import { BadRequestException, Body, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 import { hashPassword } from '../utils/password.utils';
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
-  async createUser(@Body() createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto) {
     const existingUser = await prisma.user.findUnique({
       where: {
         email: createUserDto.email,
@@ -17,7 +17,7 @@ export class UsersService {
     if (existingUser) {
       throw new BadRequestException('User with this email already exists');
     }
-
+    console.log('Creating user with data:', createUserDto.role);
     const { password: _password, ...user } = await prisma.user.create({
       data: {
         firstName: createUserDto.firstName,
@@ -36,7 +36,7 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const { password: _password, ...user } = await prisma.user.findUnique({
       where: {
         id: id,
@@ -53,7 +53,7 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
     return prisma.user.update({
       where: {
         id: id,
@@ -62,7 +62,11 @@ export class UsersService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    return prisma.user.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }

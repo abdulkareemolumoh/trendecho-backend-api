@@ -32,18 +32,18 @@ export class NewsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.newsService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.newsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNewsDto: UpdateNewsDto) {
+  update(@Param('id') id: number, @Body() updateNewsDto: UpdateNewsDto) {
     return this.newsService.update(+id, updateNewsDto);
   }
 
   @Roles(Role.USER)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.newsService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.newsService.remove(id);
   }
 }

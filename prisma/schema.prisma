@@ -28,7 +28,7 @@ model NewsImage {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(uuid())
   email     String    @unique
   firstName String
   lastName  String
@@ -48,8 +48,8 @@ model News {
   category      String
   description   String
   content       String
-  authorId      Int
   author        User        @relation(fields: [authorId], references: [id])
+  authorId      String
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   isDeleted     Boolean     @default(false)
@@ -65,7 +65,7 @@ model Comment {
   content   String
   createdAt DateTime @default(now())
   author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+  authorId  String
   news      News     @relation(fields: [newsId], references: [id])
   newsId    Int
   Likes     Likes[]
@@ -77,7 +77,7 @@ model Likes {
   comment   Comment? @relation(fields: [commentId], references: [id])
   commentId Int?
   author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+  authorId  String
   news      News?    @relation(fields: [newsId], references: [id])
   newsId    Int?
 
