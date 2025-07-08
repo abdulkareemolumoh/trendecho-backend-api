@@ -14,7 +14,7 @@ export class NewsService {
   }
 
   findAll() {
-    return prisma.user.findMany();
+    return prisma.news.findMany();
   }
 
   findOne(id: number) {

@@ -41,6 +41,10 @@ export class UsersService {
       where: {
         id: id,
       },
+      include: {
+        comment: true,
+        posts: true,
+      },
     });
     return user;
   }
