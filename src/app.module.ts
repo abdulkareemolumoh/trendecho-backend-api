@@ -6,9 +6,10 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_PIPE } from '@nestjs/core';
 import { ImageUploaderModule } from './image-uploader/image-uploader.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
-  imports: [NewsModule, UsersModule, AuthModule, ImageUploaderModule],
+  imports: [NewsModule, UsersModule, AuthModule, ImageUploaderModule, CommentModule],
   controllers: [AppController],
   providers: [
     AppService,
