@@ -25,8 +25,13 @@ export class NewsService {
     });
   }
 
-  update(id: number, updateNewsDto: UpdateNewsDto) {
-    return `This action updates a #${id} news`;
+  async update(id: number, updateNewsDto: UpdateNewsDto) {
+    return prisma.news.update({
+      where: {
+        id,
+      },
+      data: updateNewsDto,
+    });
   }
 
   remove(id: number) {

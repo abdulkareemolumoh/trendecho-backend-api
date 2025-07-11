@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { CreateNewsDto } from './dto/create-news.dto';
@@ -32,18 +33,21 @@ export class NewsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.newsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateNewsDto: UpdateNewsDto) {
-    return this.newsService.update(+id, updateNewsDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateNewsDto: UpdateNewsDto,
+  ) {
+    return this.newsService.update(id, updateNewsDto);
   }
 
-  @Roles(Role.USER)
+  @Roles(Role.ADMIN)
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.newsService.remove(id);
   }
 }
