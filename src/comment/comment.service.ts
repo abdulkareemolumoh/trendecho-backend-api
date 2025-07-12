@@ -14,18 +14,26 @@ export class CommentService {
   }
 
   findAll() {
-    return `This action returns all comment`;
+    return prisma.comment.findMany({});
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} comment`;
+    return prisma.comment.findUnique({
+      where: { id },
+      include: { news: true, author: true },
+    });
   }
 
   update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
+    return prisma.comment.update({
+      where: { id },
+      data: updateCommentDto,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} comment`;
+    return prisma.comment.delete({
+      where: { id },
+    });
   }
 }

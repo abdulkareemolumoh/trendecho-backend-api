@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -13,7 +14,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags(`comment`)
-@Controller('news/comment')
+@Controller('/comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
@@ -28,17 +29,20 @@ export class CommentController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.commentService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.update(+id, updateCommentDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCommentDto: UpdateCommentDto,
+  ) {
+    return this.commentService.update(id, updateCommentDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.commentService.remove(id);
   }
 }
