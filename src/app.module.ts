@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_PIPE } from '@nestjs/core';
 import { ImageUploaderModule } from './image-uploader/image-uploader.module';
 import { CommentModule } from './comment/comment.module';
+import { LikesModule } from './likes/likes.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CommentModule } from './comment/comment.module';
     AuthModule,
     ImageUploaderModule,
     CommentModule,
+    LikesModule,
   ],
   controllers: [AppController],
   providers: [
