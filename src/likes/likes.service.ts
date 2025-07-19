@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { CreateLikeDto } from './dto/create-like.dto';
 import { UpdateLikeDto } from './dto/update-like.dto';
 import { PrismaClient } from '@prisma/client';
@@ -7,14 +11,38 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class LikesService {
-  create(createLikeDto: CreateLikeDto) {
-    const { commentId, newsId } = createLikeDto;
-    if (!commentId && !newsId) {
-      throw new Error('Either commentId or newsId must be provided');
+  async create(createLikeDto: CreateLikeDto) {
+    const { authorId, commentId, newsId } = createLikeDto;
+
+    // Validate that either commentId or newsId is provided — not both, not neither
+    const isLikingComment = !!commentId;
+    const isLikingNews = !!newsId;
+
+    if (!isLikingComment && !isLikingNews) {
+      throw new BadRequestException(
+        'Either commentId or newsId must be provided',
+      );
     }
-    return prisma.likes.create({
-      data: createLikeDto,
+
+    if (isLikingComment && isLikingNews) {
+      throw new BadRequestException(
+        'Cannot like both a comment and news at the same time',
+      );
+    }
+
+    // Check for duplicate like
+    const alreadyLiked = await prisma.likes.findUnique({
+      where: isLikingComment
+        ? { authorId_commentId: { authorId, commentId: commentId! } }
+        : { authorId_newsId: { authorId, newsId: newsId! } },
     });
+
+    if (alreadyLiked) {
+      throw new ConflictException('You have already liked this item');
+    }
+
+    // Create the like
+    return prisma.likes.create({ data: createLikeDto });
   }
 
   findAll() {

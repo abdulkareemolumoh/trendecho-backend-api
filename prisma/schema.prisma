@@ -82,5 +82,6 @@ model Likes {
   news      News?    @relation(fields: [newsId], references: [id])
   newsId    Int?
 
-  @@unique([authorId, commentId, newsId]) // Prevent duplicate likes
+  @@unique([authorId, commentId])  // Prevents duplicate comment likes
+  @@unique([authorId, newsId])     // Prevents duplicate news likes
 }
